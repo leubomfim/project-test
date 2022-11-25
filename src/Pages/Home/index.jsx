@@ -23,6 +23,11 @@ export const Home = () => {
   const length = logged.tableInfo.length;
 
   useEffect(() => {
+    localStorage.setItem('accounts', JSON.stringify(users));
+    localStorage.setItem('logged', JSON.stringify(logged));
+  }, [users, logged]);
+
+  useEffect(() => {
     setOpen(false);
     localStorage.setItem('accounts', JSON.stringify(users));
     localStorage.setItem('logged', JSON.stringify(logged));
