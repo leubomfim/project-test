@@ -20,12 +20,7 @@ export const Home = () => {
   const [phone, setPhone] = useState('');
   const [editId, setEditId] = useState('');
   const [resetPage, setResetPage] = useState(false);
-  const length = logged.tableInfo.length;
-
-  useEffect(() => {
-    localStorage.setItem('accounts', JSON.stringify(users));
-    localStorage.setItem('logged', JSON.stringify(logged));
-  }, [users, logged]);
+  const length = logged.tableInfo ? logged.tableInfo.length : null;
 
   useEffect(() => {
     setOpen(false);
