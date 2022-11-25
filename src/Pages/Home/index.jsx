@@ -67,9 +67,9 @@ export const Home = () => {
 
   const handleEditCrud = (id) => {
     setOpenEditModal(true);
-    setEditId(Number(id));
+    setEditId(id);
     const filter = logged.tableInfo.filter((el) => {
-      return el.id === Number(id);
+      return el.id === id;
     });
     if (filter[0] === undefined) {
       return;
