@@ -65,11 +65,11 @@ export const Home = () => {
     handleCloseModal();
   };
 
-  const handleEditCrud = (e) => {
+  const handleEditCrud = (id) => {
     setOpenEditModal(true);
-    setEditId(Number(e.target.id));
+    setEditId(Number(id));
     const filter = logged.tableInfo.filter((el) => {
-      return el.id === Number(e.target.id);
+      return el.id === Number(id);
     });
     if (filter[0] === undefined) {
       return;
@@ -287,8 +287,8 @@ export const Home = () => {
                             </S.DeleteButton>
                             <S.EditButton
                               id={el.id}
-                              onClick={(e) => {
-                                handleEditCrud(e);
+                              onClick={() => {
+                                handleEditCrud(el.id);
                               }}
                             >
                               <AiFillEdit id={el.id} />
