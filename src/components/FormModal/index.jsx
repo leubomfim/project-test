@@ -1,11 +1,13 @@
 import * as S from './styles';
 import P from 'prop-types';
+import { LogoAndBackArea } from '../LogoAndBackArea';
 
-export const FormModal = ({ text, children }) => {
+export const FormModal = ({ text, children, margin }) => {
   return (
     <S.BackgroundFormModal>
       <S.FormModal>
-        <S.FormTitle>{text}</S.FormTitle>
+        <LogoAndBackArea />
+        <S.FormTitle margin={margin}>{text}</S.FormTitle>
         {children}
       </S.FormModal>
     </S.BackgroundFormModal>
@@ -15,4 +17,5 @@ export const FormModal = ({ text, children }) => {
 FormModal.propTypes = {
   text: P.string.isRequired,
   children: P.node.isRequired,
+  margin: P.bool.isRequired,
 };

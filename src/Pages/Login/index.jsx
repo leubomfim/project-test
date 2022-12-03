@@ -2,11 +2,19 @@ import * as S from './styles';
 import { useEffect, useState } from 'react';
 import { useInformationContext } from '../../contexts/context';
 import { FormModal } from '../../components/FormModal';
+import { Link } from 'react-router-dom';
+import { Background } from '../../components/Background';
+import { Input } from '../../components/Input';
+import { Button } from '../../components/Button';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+
+import bg from '../../images/bg.png';
 
 export const Login = () => {
+  const [error, setError] = useState({});
   const [counter, setCounter] = useState(5);
-  const [errorLength, setErrorLength] = useState(null);
-  const [userDontExist, setUserDontExist] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     users,
     email,
@@ -42,30 +50,42 @@ export const Login = () => {
 
   const handleLogInto = (e) => {
     e.preventDefault();
-    if (email.length === 0 || password.length === 0) {
-      alert('Fill in the fields');
-      return;
-    } else if (password.length < 6) {
-      setUserDontExist(null);
-      setErrorLength('error');
+
+    if (password.length < 6) {
+      setError({
+        errorTitle: 'Must have 6 or more letters!',
+        errorText:
+          'So that you can proceed, change the password and confirm the password field so that it has more than 6 letters',
+      });
     } else {
       if (users.length > 0) {
-        setErrorLength(null);
         const cu = users.filter((el) => {
           return el.email === email;
         });
         if (cu[0] === undefined) {
-          setUserDontExist('error');
+          setError({
+            errorTitle: "This user don't exist!",
+            errorText:
+              'Please check the completed fields as this account was not found in the account records.',
+          });
         } else if (cu[0].email === email && cu[0].password === password) {
           setLogged(cu[0]);
           navigate('/');
           setEmail('');
           setPassword('');
         } else {
-          setUserDontExist('error');
+          setError({
+            errorTitle: "This user don't exist!",
+            errorText:
+              'Please check the completed fields as this account was not found in the account records.',
+          });
         }
       } else {
-        setUserDontExist('error');
+        setError({
+          errorTitle: "This user don't exist!",
+          errorText:
+            'Please check the completed fields as this account was not found in the account records.',
+        });
       }
     }
   };
@@ -73,39 +93,46 @@ export const Login = () => {
   return (
     <>
       {Object.keys(logged).length === 0 && (
-        <FormModal text="Login">
-          {userDontExist === null && null}
-          {userDontExist === 'error' && (
-            <S.SmallError>{"This user don't exist!"}</S.SmallError>
-          )}
-          <S.Form onSubmit={(e) => handleLogInto(e)}>
-            <S.FormControl>
-              <S.Label htmlFor="email">Email</S.Label>
-              <S.Input
-                onChange={(e) => setEmail(e.target.value)}
+        <Background bg={bg}>
+          <FormModal margin={false} text="Login">
+            {Object.values(error).length === 0 && null}
+            {Object.values(error).length > 0 && (
+              <S.ErrorBox>
+                <S.CloseError onClick={() => setError({})}>X</S.CloseError>
+                <S.ErrorTitle>{error.errorTitle}</S.ErrorTitle>
+                <S.ErrorText>{error.errorText}</S.ErrorText>
+              </S.ErrorBox>
+            )}
+            <S.Form onSubmit={(e) => handleLogInto(e)}>
+              <Input
+                required={true}
+                handleChange={(e) => setEmail(e.target.value)}
                 value={email}
                 id="email"
                 type="email"
-                placeholder="Set your email..."
+                placeholder="Email"
               />
-            </S.FormControl>
-            <S.FormControl>
-              <S.Label htmlFor="password">Password</S.Label>
-              <S.Input
-                onChange={(e) => setPassword(e.target.value)}
+
+              <Input
+                required={true}
+                handleChange={(e) => setPassword(e.target.value)}
                 value={password}
                 id="password"
-                type="password"
-                placeholder="Set your password..."
-              />
-              {errorLength === null && null}
-              {errorLength === 'error' && (
-                <S.SmallError>Must have 6 or more letters!</S.SmallError>
-              )}
-            </S.FormControl>
-            <S.Button type="submit">Login</S.Button>
-          </S.Form>
-        </FormModal>
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Password"
+              >
+                <S.ShowPassword onClick={() => setShowPassword((s) => !s)}>
+                  {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                </S.ShowPassword>
+              </Input>
+
+              <Button type="submit" text="Sing In" />
+              <S.CreateAccount>
+                Create Account? <Link to="/register">Click here</Link>
+              </S.CreateAccount>
+            </S.Form>
+          </FormModal>
+        </Background>
       )}
       {Object.keys(logged).length > 0 && (
         <S.CentralizeRedirectBox>

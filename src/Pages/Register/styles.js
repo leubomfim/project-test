@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const BackRegisterModal = styled.div`
   width: 100%;
@@ -15,19 +15,11 @@ export const RegisterModal = styled.div`
   padding: 20px;
 `;
 
-export const HeadingRegister = styled.h2`
-  color: black;
-  font-size: 32px;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 20px;
-`;
-
 export const Form = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 40px;
 
   & > a {
     color: black;
@@ -37,6 +29,7 @@ export const Form = styled.form`
 `;
 
 export const FormControl = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -47,7 +40,8 @@ export const Select = styled.select`
   text-align: center;
   border-radius: 3px;
   padding: 10px;
-  border: 1px solid #333;
+  font-size: 18px;
+  border-bottom: 1px solid #7FC047;
 `;
 
 export const Option = styled.option`
@@ -55,33 +49,40 @@ export const Option = styled.option`
   padding: 5px;
 `;
 
-export const Input = styled.input`
-  ${({ error }) => css`
-    ${error === 'error' && 'border: 1px solid red'}
-    ${error === null && 'border: 1px solid #333;'}
-  `};
-  width: 100%;
+export const ErrorBox = styled.div`
+  background-color: #fda9a87c;
+  position: absolute;
+  top: 110px;
+  right: 40px;
+  padding: 17px 10px;
+  border-radius: 5px;
+  border: 2px solid red;
+`;
+
+export const ErrorTitle = styled.h3`
+  font-size: 30px;
+  color: red;
+  margin-bottom: 5px;
+`;
+
+export const ErrorText = styled.p`
   font-size: 18px;
-  padding:10px;
-  border-radius: 3px;
-  border: 1px solid #333;
+  width: 380px;
 `;
 
-export const Label = styled.label`
-  font-size: 20px;
-  color: #C4C2C4;
-`;
-
-export const Button = styled.button`
-  color: white;
-  width: 100%;
-  padding: 10px 0;
-  font-size: 20px;
-  background-color: rgb(25, 118, 210);
+export const CloseError = styled.button`
+  position: absolute;
+  background-color: transparent;
+  top: 2px;
+  right: 4px;
+  font-size: 17px;
   cursor: pointer;
 `;
 
-export const SmallError = styled.small`
-  font-size: 14px;
-  color: red;
+export const ShowPassword = styled.button`
+  position: absolute;
+  right: 0;
+  background-color: transparent;
+  top: 12px;
+  font-size: 18px;
 `;

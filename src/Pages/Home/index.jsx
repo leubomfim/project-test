@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
+
+import * as S from './styles';
+
 import { Container } from '../../components/Container';
 import { Header } from '../../components/Header';
 import { useInformationContext } from '../../contexts/context';
-import * as S from './styles';
+
 import {
   AiFillEdit,
   AiOutlineClose,
   AiOutlineArrowRight,
 } from 'react-icons/ai';
 import { BsFillTrashFill } from 'react-icons/bs';
+import { Input } from '../../components/Input';
 
 export const Home = () => {
   const { users, logged, setOpen } = useInformationContext();
@@ -23,6 +27,7 @@ export const Home = () => {
   const length = logged.tableInfo ? logged.tableInfo.length : null;
 
   useEffect(() => {
+    document.title = `Home`;
     setOpen(false);
     localStorage.setItem('accounts', JSON.stringify(users));
     localStorage.setItem('logged', JSON.stringify(logged));
@@ -61,7 +66,7 @@ export const Home = () => {
       return el.email === logged.email;
     });
 
-    filter[0] = logged;
+    filter[0].tableInfo = logged.tableInfo;
     handleCloseModal();
   };
 
@@ -93,7 +98,7 @@ export const Home = () => {
     }
     filter[0].name = name;
     filter[0].email = email;
-    filter[0].phone = name;
+    filter[0].phone = phone;
     filter[0].address = address;
 
     document.querySelector('.header').style.filter = 'none';
@@ -129,50 +134,42 @@ export const Home = () => {
               </S.CloseModal>
             </S.HeaderModal>
             <S.ModalForm onSubmit={(e) => handleAddInformation(e)}>
-              <S.ModalFormControl>
-                <S.ModalLabel htmlFor="name">Name</S.ModalLabel>
-                <S.ModalInput
-                  required
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  type="text"
-                  placeholder="Insert a name..."
-                />
-              </S.ModalFormControl>
-              <S.ModalFormControl>
-                <S.ModalLabel htmlFor="email">Email</S.ModalLabel>
-                <S.ModalInput
-                  required
-                  value={email}
-                  id="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  placeholder="Insert a email..."
-                />
-              </S.ModalFormControl>
-              <S.ModalFormControl>
-                <S.ModalLabel htmlFor="address">Address</S.ModalLabel>
-                <S.ModalInput
-                  required
-                  id="address"
-                  value={address}
-                  type="text"
-                  onChange={(e) => setAddress(e.target.value)}
-                  placeholder="Insert a address..."
-                />
-              </S.ModalFormControl>
-              <S.ModalFormControl>
-                <S.ModalLabel htmlFor="phone">Phone</S.ModalLabel>
-                <S.ModalInput
-                  type="tel"
-                  value={phone}
-                  required
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Ex: (17) 99999-9999"
-                  id="phone"
-                />
-              </S.ModalFormControl>
+              <Input
+                required={true}
+                id="name"
+                value={name}
+                handleChange={(e) => setName(e.target.value)}
+                type="text"
+                placeholder="Name"
+              />
+
+              <Input
+                required={true}
+                value={email}
+                id="email"
+                handleChange={(e) => setEmail(e.target.value)}
+                type="email"
+                placeholder="Email"
+              />
+
+              <Input
+                required={true}
+                id="address"
+                value={address}
+                type="text"
+                handleChange={(e) => setAddress(e.target.value)}
+                placeholder="Address"
+              />
+
+              <Input
+                type="tel"
+                value={phone}
+                required={true}
+                handleChange={(e) => setPhone(e.target.value)}
+                placeholder="Phone"
+                id="phone"
+              />
+
               <S.ModalButton type="submit">
                 <AiOutlineArrowRight />
               </S.ModalButton>
@@ -190,50 +187,42 @@ export const Home = () => {
               </S.CloseModal>
             </S.HeaderModal>
             <S.ModalForm onSubmit={(e) => handleEditInformation(e)}>
-              <S.ModalFormControl>
-                <S.ModalLabel htmlFor="name">Name</S.ModalLabel>
-                <S.ModalInput
-                  required
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  type="text"
-                  placeholder="Insert a name..."
-                />
-              </S.ModalFormControl>
-              <S.ModalFormControl>
-                <S.ModalLabel htmlFor="email">Email</S.ModalLabel>
-                <S.ModalInput
-                  required
-                  value={email}
-                  id="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  placeholder="Insert a email..."
-                />
-              </S.ModalFormControl>
-              <S.ModalFormControl>
-                <S.ModalLabel htmlFor="address">Address</S.ModalLabel>
-                <S.ModalInput
-                  required
-                  id="address"
-                  value={address}
-                  type="text"
-                  onChange={(e) => setAddress(e.target.value)}
-                  placeholder="Insert a address..."
-                />
-              </S.ModalFormControl>
-              <S.ModalFormControl>
-                <S.ModalLabel htmlFor="phone">Phone</S.ModalLabel>
-                <S.ModalInput
-                  type="tel"
-                  value={phone}
-                  required
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Ex: (17) 99999-9999"
-                  id="phone"
-                />
-              </S.ModalFormControl>
+              <Input
+                required={true}
+                id="name"
+                value={name}
+                handleChange={(e) => setName(e.target.value)}
+                type="text"
+                placeholder="Name"
+              />
+
+              <Input
+                required={true}
+                value={email}
+                id="email"
+                handleChange={(e) => setEmail(e.target.value)}
+                type="email"
+                placeholder="Email"
+              />
+
+              <Input
+                required={true}
+                id="address"
+                value={address}
+                type="text"
+                handleChange={(e) => setAddress(e.target.value)}
+                placeholder="Address"
+              />
+
+              <Input
+                type="tel"
+                value={phone}
+                required={true}
+                handleChange={(e) => setPhone(e.target.value)}
+                placeholder="Phone Ex: (17) 99999-9999"
+                id="phone"
+              />
+
               <S.ModalButton type="submit">
                 <AiOutlineArrowRight />
               </S.ModalButton>
@@ -247,9 +236,12 @@ export const Home = () => {
           {Object.keys(logged).length > 0 && (
             <>
               <S.AddArea>
-                <h2>Details: {logged.tableInfo.length} added details</h2>
+                <S.AddedDetails>
+                  Details: {logged.tableInfo.length} added details
+                </S.AddedDetails>
                 <S.AddButton
                   onClick={() => {
+                    setOpen(false);
                     handleOpenModal();
                   }}
                 >
@@ -257,50 +249,55 @@ export const Home = () => {
                 </S.AddButton>
               </S.AddArea>
 
-              <S.Table>
-                <thead>
-                  <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {logged.tableInfo.length > 0 &&
-                    logged.tableInfo.map((el) => (
-                      <tr id={el.id} key={el.id}>
-                        <td>{el.name}</td>
-                        <td>{el.email}</td>
-                        <td>{el.address}</td>
-                        <td>{el.phone}</td>
-                        <td>
-                          <S.ActionsArea>
-                            <S.DeleteButton
-                              id={el.id}
-                              onClick={() => {
-                                handleDeleteInfo(el.id);
-                              }}
-                            >
-                              <BsFillTrashFill id={el.id} />
-                            </S.DeleteButton>
-                            <S.EditButton
-                              id={el.id}
-                              onClick={() => {
-                                handleEditCrud(el.id);
-                              }}
-                            >
-                              <AiFillEdit id={el.id} />
-                            </S.EditButton>
-                          </S.ActionsArea>
-                        </td>
+              <S.TableWrapper>
+                {logged.tableInfo.length > 0 && (
+                  <S.Table scope="row">
+                    <thead>
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Actions</th>
                       </tr>
-                    ))}
-                </tbody>
-              </S.Table>
+                    </thead>
+                    <tbody>
+                      {logged.tableInfo.map((el) => (
+                        <tr id={el.id} key={el.id}>
+                          <td>{el.name}</td>
+                          <td>{el.email}</td>
+                          <td>{el.address}</td>
+                          <td>{el.phone}</td>
+                          <td>
+                            <S.ActionsArea>
+                              <S.DeleteButton
+                                id={el.id}
+                                onClick={() => {
+                                  handleDeleteInfo(el.id);
+                                }}
+                              >
+                                <BsFillTrashFill id={el.id} />
+                              </S.DeleteButton>
+                              <S.EditButton
+                                id={el.id}
+                                onClick={() => {
+                                  handleEditCrud(el.id);
+                                }}
+                              >
+                                <AiFillEdit id={el.id} />
+                              </S.EditButton>
+                            </S.ActionsArea>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </S.Table>
+                )}
+              </S.TableWrapper>
               {logged.tableInfo.length === 0 && (
-                <S.NoItems>No informations!</S.NoItems>
+                <div>
+                  <S.NoItems>No details added!</S.NoItems>
+                </div>
               )}
             </>
           )}

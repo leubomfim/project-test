@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Background } from '../../components/Background';
+import { Button } from '../../components/Button';
 import { FormModal } from '../../components/FormModal';
+import { Input } from '../../components/Input';
 import { useInformationContext } from '../../contexts/context';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import * as S from './styles';
 
+import bg from '../../images/bg2.webp';
+
 export const Register = () => {
-  const [nameErrorLength, setNameErrorLength] = useState(null);
-  const [passwordErrorLength, setPasswordErrorLength] = useState(null);
-  const [errorNotEqual, setErrorNotEqual] = useState(null);
-  const [passwordNotEqual, setPasswordNotEqual] = useState(null);
+  const [error, setError] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const {
     name,
     setName,
@@ -62,153 +68,146 @@ export const Register = () => {
       });
     }
 
-    if (
-      name.length === 0 ||
-      email.length === 0 ||
-      confirmEmail.length === 0 ||
-      password.length === 0 ||
-      confirmPassword.length === 0 ||
-      genre === 'default'
-    ) {
-      alert('Fill in the fields');
-      return;
-    } else if (name.length < 3) {
-      setNameErrorLength('error');
-      return;
+    if (name.length < 3) {
+      setError({
+        errorTitle: 'Must have 3 or more letters!',
+        errorText:
+          'Before you can proceed, change the name field so that it has more than 3 letters',
+      });
+    } else if (genre === 'default') {
+      setError({
+        errorTitle: 'Select your gender!',
+        errorText: 'Select your genre, so you can proceed!',
+      });
     } else if (email !== confirmEmail) {
-      setNameErrorLength(null);
-      setErrorNotEqual('error');
-      return;
+      setError({
+        errorTitle: 'The emails match each other!',
+        errorText: 'Check the emails to make sure they match, to proceed!',
+      });
     } else if (password.length < 6) {
-      setErrorNotEqual(null);
-      setNameErrorLength(null);
-      setPasswordErrorLength('error');
-      return;
+      setError({
+        errorTitle: 'Must have 6 or more letters!',
+        errorText:
+          'So that you can proceed, change the password and confirm the password field so that it has more than 6 letters',
+      });
     } else if (confirmPassword !== password) {
-      setErrorNotEqual(null);
-      setPasswordErrorLength(null);
-      setNameErrorLength(null);
-      setPasswordNotEqual('error');
-      return;
+      setError({
+        errorTitle: 'The passwords match each other!',
+        errorText:
+          'Check the passwords entered in the areas, if they match each other.',
+      });
     } else if (emailUser.length > 0) {
       const filter = emailUser.filter((el) => {
         return el === email;
       });
       if (filter[0] === email) {
-        setPasswordNotEqual(null);
-        setErrorNotEqual(null);
-        setNameErrorLength(null);
-        setErrorNotEqual('error');
+        setError({
+          errorTitle: 'This user already exists!',
+          errorText:
+            'This email is probably already registered check if you have already registered with it, if not try to contact us',
+        });
       } else {
         saveUser();
         localStorage.setItem('accounts', JSON.stringify(users));
         navigate('/login');
         setName('');
+        setConfirmEmail('');
+        setConfirmPassword('');
       }
     } else {
       saveUser();
       localStorage.setItem('accounts', JSON.stringify(users));
       navigate('/login');
       setName('');
+      setConfirmEmail('');
+      setConfirmPassword('');
     }
   };
 
   return (
-    <FormModal text="Register">
-      <S.Form onSubmit={(e) => handleSubmit(e)}>
-        <S.FormControl>
-          <S.Label htmlFor="name">Name</S.Label>
-          <S.Input
-            error={nameErrorLength}
+    <Background bg={bg}>
+      <FormModal margin={true} text="Register">
+        {Object.values(error).length === 0 && null}
+        {Object.values(error).length > 0 && (
+          <S.ErrorBox>
+            <S.CloseError onClick={() => setError({})}>X</S.CloseError>
+            <S.ErrorTitle>{error.errorTitle}</S.ErrorTitle>
+            <S.ErrorText>{error.errorText}</S.ErrorText>
+          </S.ErrorBox>
+        )}
+        <S.Form onSubmit={(e) => handleSubmit(e)}>
+          <Input
+            required={true}
             type="text"
             id="name"
-            onChange={(e) => setName(e.target.value)}
+            handleChange={(e) => setName(e.target.value)}
             value={name}
-            placeholder="Set your name..."
+            placeholder="Name"
           />
-          {nameErrorLength === null && null}
-          {nameErrorLength === 'error' && (
-            <S.SmallError>Must have 3 or more letters!</S.SmallError>
-          )}
-        </S.FormControl>
-        <S.FormControl>
-          <S.Label htmlFor="email">Email</S.Label>
-          <S.Input
-            onChange={(e) => setEmail(e.target.value)}
+
+          <Input
+            required={true}
+            handleChange={(e) => setEmail(e.target.value)}
             value={email}
             id="email"
             type="email"
-            placeholder="Set your email..."
+            placeholder="Email"
           />
-          {errorNotEqual === null && null}
-          {errorNotEqual === 'error' && (
-            <S.SmallError>Email must match!</S.SmallError>
-          )}
-        </S.FormControl>
-        <S.FormControl>
-          <S.Label htmlFor="confirm_email">Confirm your Email</S.Label>
-          <S.Input
-            onChange={(e) => setConfirmEmail(e.target.value)}
+
+          <Input
+            required={true}
+            handleChange={(e) => setConfirmEmail(e.target.value)}
             value={confirmEmail}
             id="confirm_email"
             type="email"
-            placeholder="Confirm your email..."
+            placeholder="Confirm email"
           />
-          {errorNotEqual === null && null}
-          {errorNotEqual === 'error' && (
-            <S.SmallError>Email must match!</S.SmallError>
-          )}
-        </S.FormControl>
-        <S.FormControl>
-          <S.Label htmlFor="password">Password</S.Label>
-          <S.Input
-            onChange={(e) => setPassword(e.target.value)}
+
+          <Input
+            required={true}
+            handleChange={(e) => setPassword(e.target.value)}
             value={password}
             id="password"
-            type="password"
-            placeholder="Set your password..."
-          />
-          {passwordNotEqual === null && null}
-          {passwordNotEqual === 'error' && (
-            <S.SmallError>Password must match!</S.SmallError>
-          )}
-          {passwordErrorLength === null && null}
-          {passwordErrorLength === 'error' && (
-            <S.SmallError>Must have 6 or more letters!</S.SmallError>
-          )}
-        </S.FormControl>
-        <S.FormControl>
-          <S.Label htmlFor="confirm_password">Confirm your Password</S.Label>
-          <S.Input
-            id="confirm_password"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            value={confirmPassword}
-            type="password"
-            placeholder="Confirm your password..."
-          />
-          {passwordNotEqual === null && null}
-          {passwordNotEqual === 'error' && (
-            <S.SmallError>Password must match!</S.SmallError>
-          )}
-        </S.FormControl>
-        <S.FormControl>
-          <S.Label htmlFor="genre">Select your gender</S.Label>
-          <S.Select
-            id="genre"
-            onChange={(e) => setGenre(e.target.value)}
-            defaultValue="default"
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Password"
           >
-            <S.Option value={genre} disabled>
-              Select your gender!
-            </S.Option>
-            <S.Option value="man">Man</S.Option>
-            <S.Option value="woman">Woman</S.Option>
-            <S.Option value="other">Other</S.Option>
-          </S.Select>
-        </S.FormControl>
-        <S.Button type="submit">Register</S.Button>
-        <Link to="/login">Already have an account?</Link>
-      </S.Form>
-    </FormModal>
+            <S.ShowPassword onClick={() => setShowPassword((s) => !s)}>
+              {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+            </S.ShowPassword>
+          </Input>
+
+          <Input
+            required={true}
+            id="confirm_password"
+            handleChange={(e) => setConfirmPassword(e.target.value)}
+            value={confirmPassword}
+            type={showConfirmPassword ? 'text' : 'password'}
+            placeholder="Confirm password"
+          >
+            <S.ShowPassword onClick={() => setShowConfirmPassword((s) => !s)}>
+              {showConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+            </S.ShowPassword>
+          </Input>
+
+          <S.FormControl>
+            <S.Select
+              required
+              id="genre"
+              onChange={(e) => setGenre(e.target.value)}
+              defaultValue="default"
+            >
+              <S.Option value={genre} disabled>
+                Select your gender!
+              </S.Option>
+              <S.Option value="man">Man</S.Option>
+              <S.Option value="woman">Woman</S.Option>
+              <S.Option value="other">Other</S.Option>
+            </S.Select>
+          </S.FormControl>
+          <Button type="submit" text="Register" />
+          <Link to="/login">Already have an account?</Link>
+        </S.Form>
+      </FormModal>
+    </Background>
   );
 };

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Header = styled.header`
-  padding: 20px 0;
+  padding: 5px 0;
   border-bottom: 1px solid #333;
 `;
 
@@ -11,44 +11,64 @@ export const HeaderWrapper = styled.div`
   align-items: center;
 `;
 
-export const DropMenuArea = styled.div`
-  position: relative;
+export const Logo = styled.img`
+  width: 150px;
+  height: 75px;
 `;
 
 export const DropMenu = styled.div`
+  display: flex;
+  transition: height 2s ease;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   border-radius: 3px;
-  padding: 10px 15px 15px 10px;
   position: absolute;
-  top: 40px;
-  background-color: rgb(25, 118, 210);
+  background-color: #7FC047;
   z-index: 10;
+  right: 0;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  top: 0;
 `;
 
 export const Button = styled.button`
-  background-color: rgb(25, 118, 210);
-  color: white;
-  font-size: 20px;
-  border-radius: 3px;
-  padding: 5px 20px;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  font-size: 35px;
   cursor: pointer;
 `;
 
-export const Name = styled.h3`
-  font-size: 25px;
+export const ButtonClose = styled.button`
+  display: flex;
+  align-items: center;
+  background-color: transparent;
   color: white;
-  margin-bottom: 10px;
+  font-size: 35px;
+  cursor: pointer;
+  position: absolute;
+  top: 25px;
+  right: 30px;
+`;
+
+export const Name = styled.h3`
+  font-size: 28px;
+  color: white;
+  margin-bottom: 20px;
 `;
 
 export const MenuList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 15px;
 `;
 
 export const MenuItem = styled.li`
   & > a {
     color: white;
-    font-size: 20px;
+    font-size: 25px;
     width: 100%;
   }
 `;

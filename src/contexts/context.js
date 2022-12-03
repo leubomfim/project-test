@@ -8,7 +8,7 @@ export const UserProvider = ({ children }) => {
   const navigate = useNavigate();
   const getStorageAccount = JSON.parse(localStorage.getItem('accounts'));
   const getStorageLogged = JSON.parse(localStorage.getItem('logged'));
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(null);
   const [users, setUsers] = useState(getStorageAccount || []);
   const [name, setName] = useState('');
   const [age, setAge] = useState('');

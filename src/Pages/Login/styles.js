@@ -13,34 +13,6 @@ export const Form = styled.form`
   }
 `;
 
-export const FormControl = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-export const Input = styled.input`
-  width: 100%;
-  font-size: 18px;
-  padding:10px;
-  border-radius: 3px;
-  border: 1px solid #333;
-`;
-
-export const Label = styled.label`
-  font-size: 20px;
-  color: #C4C2C4;
-`;
-
-export const Button = styled.button`
-  color: white;
-  width: 100%;
-  padding: 10px 0;
-  font-size: 20px;
-  background-color: rgb(25, 118, 210);
-  cursor: pointer;
-`;
-
 export const CentralizeRedirectBox = styled.div`
   display: flex;
   justify-content: center;
@@ -82,4 +54,55 @@ export const RedirectButton = styled.button`
 export const SmallError = styled.small`
   font-size: 14px;
   color: red;
+`;
+
+export const CreateAccount = styled.p`
+  text-align: center;
+  font-weight: 600;
+  font-size: 20px;
+  & > a {
+    font-weight: normal;
+    color: black;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+export const ErrorBox = styled.div`
+  background-color: #fda9a87c;
+  position: absolute;
+  top: 110px;
+  right: 40px;
+  padding: 17px 10px;
+  border-radius: 5px;
+  border: 2px solid red;
+`;
+
+export const ErrorTitle = styled.h3`
+  font-size: 30px;
+  color: red;
+  margin-bottom: 5px;
+`;
+
+export const ErrorText = styled.p`
+  font-size: 18px;
+  width: 380px;
+`;
+
+export const CloseError = styled.button`
+  position: absolute;
+  background-color: transparent;
+  top: 2px;
+  right: 4px;
+  font-size: 17px;
+  cursor: pointer;
+`;
+
+export const ShowPassword = styled.button`
+  position: absolute;
+  right: 0;
+  background-color: transparent;
+  top: 12px;
+  font-size: 18px;
 `;
