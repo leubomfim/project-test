@@ -55,6 +55,7 @@ export const Settings = () => {
       <FormModal margin={false} text="Settings">
         <S.Form onSubmit={(e) => handleChangeAccount(e)}>
           <Input
+            required={true}
             placeholder="Name"
             value={name}
             id="name"
@@ -62,6 +63,7 @@ export const Settings = () => {
             handleChange={(e) => setName(e.target.value)}
           />
           <Input
+            required={true}
             placeholder="Email"
             value={email}
             id="email"
@@ -69,6 +71,7 @@ export const Settings = () => {
             handleChange={(e) => setEmail(e.target.value)}
           />
           <Input
+            required={true}
             placeholder="Password"
             value={password}
             id="password"
