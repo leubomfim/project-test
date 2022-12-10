@@ -321,14 +321,15 @@ export const Modals = ({
 
               <S.InputControl>
                 <S.Input
-                  maxLength={2}
+                  maxLength={4}
                   type="text"
-                  value={day}
+                  value={year}
                   required={true}
-                  onChange={(e) => setDay(e.target.value)}
-                  placeholder="Day"
-                  id="date"
+                  onChange={(e) => setYear(e.target.value)}
+                  placeholder={`Year (> ${actualYear})`}
+                  id="year"
                 />
+
                 <S.Select
                   required
                   onChange={(e) => setMonth(e.target.value)}
@@ -350,13 +351,14 @@ export const Modals = ({
                   <S.Option value="11">November</S.Option>
                   <S.Option value="12">December</S.Option>
                 </S.Select>
+
                 <S.Input
-                  maxLength={4}
+                  maxLength={2}
                   type="text"
-                  value={year}
+                  value={day}
                   required={true}
-                  onChange={(e) => setYear(e.target.value)}
-                  placeholder={`Year (> ${actualYear})`}
+                  onChange={(e) => setDay(e.target.value)}
+                  placeholder="Day"
                   id="date"
                 />
               </S.InputControl>
@@ -414,14 +416,15 @@ export const Modals = ({
 
               <S.InputControl>
                 <S.Input
-                  maxLength={2}
+                  maxLength={4}
                   type="text"
-                  value={day}
+                  value={year}
                   required={true}
-                  onChange={(e) => setDay(e.target.value)}
-                  placeholder="Day"
-                  id="date"
+                  onChange={(e) => setYear(e.target.value)}
+                  placeholder={`Year (> ${actualYear})`}
+                  id="month"
                 />
+
                 <S.Select
                   required
                   onChange={(e) => setMonth(e.target.value)}
@@ -443,14 +446,15 @@ export const Modals = ({
                   <S.Option value="11">November</S.Option>
                   <S.Option value="12">December</S.Option>
                 </S.Select>
+
                 <S.Input
-                  maxLength={4}
+                  maxLength={2}
                   type="text"
-                  value={year}
+                  value={day}
                   required={true}
-                  onChange={(e) => setYear(e.target.value)}
-                  placeholder={`Year (> ${actualYear})`}
-                  id="date"
+                  onChange={(e) => setDay(e.target.value)}
+                  placeholder="Day"
+                  id="day"
                 />
               </S.InputControl>
 

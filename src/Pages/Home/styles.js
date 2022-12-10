@@ -46,7 +46,6 @@ export const Project = styled.div`
   position: relative;
   ${({ bg }) => css`
     & .swiper-slide {
-      width: 320px;
       height: 200px;
       padding: 20px;
       border-radius: 10px;

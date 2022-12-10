@@ -119,12 +119,6 @@ export const ModalForm = styled.form`
   flex-direction: column;
   gap: 20px;
 
-
-  & input[type="date"] {
-    color: #c4c4c4;
-  }
-
-
   @media (max-width: 600px) {
     width: 90%;
   }
@@ -133,6 +127,10 @@ export const ModalForm = styled.form`
 export const InputControl = styled.div`
   display: flex;
   gap: 20px;
+
+  @media screen and (max-width: 426px) {
+    flex-direction: column;
+  }
 `;
 
 export const Input = styled.input`
