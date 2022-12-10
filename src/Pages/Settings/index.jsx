@@ -19,14 +19,13 @@ export const Settings = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('accounts', JSON.stringify(users));
-    localStorage.setItem('logged', JSON.stringify(logged));
-    document.title = 'Settings';
-
     window.addEventListener('load', () => {
       if (Object.values(logged).length === 0) {
         navigate('/');
       }
+      localStorage.setItem('accounts', JSON.stringify(users));
+      localStorage.setItem('logged', JSON.stringify(logged));
+      document.title = 'Settings';
     });
 
     return () => {
@@ -35,8 +34,9 @@ export const Settings = () => {
   }, [attPage, navigate, logged, users]);
 
   const handleChangeAccount = (e) => {
-    setAttPage(!attPage);
     e.preventDefault();
+    setAttPage(!attPage);
+
     const filter = users.filter((el) => {
       return el.email === logged.email;
     });

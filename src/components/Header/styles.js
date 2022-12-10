@@ -3,6 +3,11 @@ import styled from 'styled-components';
 export const Header = styled.header`
   padding: 5px 0;
   border-bottom: 1px solid #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 3;
+  background-color: white;
 `;
 
 export const HeaderWrapper = styled.div`
@@ -16,9 +21,16 @@ export const Logo = styled.img`
   height: 75px;
 `;
 
-export const DropMenu = styled.div`
+export const MenuSideBarBg = styled.div`
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 5;
+  background-color: rgba(46,46,46,0.623);
+`;
+
+export const MenuSideBar = styled.div`
   display: flex;
-  transition: height 2s ease;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -28,6 +40,7 @@ export const DropMenu = styled.div`
   z-index: 10;
   right: 0;
   width: 80%;
+  height: 100%;
   max-width: 400px;
   text-align: center;
   top: 0;

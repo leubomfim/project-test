@@ -57,6 +57,11 @@ export const ErrorBox = styled.div`
   padding: 17px 10px;
   border-radius: 5px;
   border: 2px solid red;
+
+  @media screen and (max-width: 600px) {
+    width: 82%;
+    top: 30px;
+  }
 `;
 
 export const ErrorTitle = styled.h3`
@@ -68,6 +73,10 @@ export const ErrorTitle = styled.h3`
 export const ErrorText = styled.p`
   font-size: 18px;
   width: 380px;
+
+  @media screen and (max-width: 600px) {
+    width: 100%;
+  }
 `;
 
 export const CloseError = styled.button`

@@ -1,304 +1,345 @@
 import { useEffect, useState } from 'react';
-
 import * as S from './styles';
 
 import { Container } from '../../components/Container';
 import { Header } from '../../components/Header';
+import { SwiperComponent } from '../../components/Swiper';
+
 import { useInformationContext } from '../../contexts/context';
 
-import {
-  AiFillEdit,
-  AiOutlineClose,
-  AiOutlineArrowRight,
-} from 'react-icons/ai';
-import { BsFillTrashFill } from 'react-icons/bs';
-import { Input } from '../../components/Input';
+import { SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+import { ActionsArea } from '../../components/ActionsArea';
+import { Modals } from '../../components/Modals';
 
 export const Home = () => {
-  const { users, logged, setOpen } = useInformationContext();
+  const {
+    users,
+    logged,
+    setOpen,
+    setArea,
+    setYear,
+    setMonth,
+    setName,
+    setEditId,
+    setDay,
+    resetPage,
+    setResetPage,
+    openDeleteModal,
+    setOpenDeleteModal,
+    setDeleteInProgressModal,
+    setDeleteCompletedModal,
+  } = useInformationContext();
   const [openModal, setOpenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-  const [phone, setPhone] = useState('');
-  const [editId, setEditId] = useState('');
-  const [resetPage, setResetPage] = useState(false);
-  const length = logged.tableInfo ? logged.tableInfo.length : null;
+  const [editArea, setEditArea] = useState('');
 
   useEffect(() => {
     document.title = `Home`;
+    setName('');
     setOpen(false);
+    setArea('default');
+    setMonth('default');
+    setYear('');
+    setEditId('');
+    setResetPage(false);
+  }, [setOpen, setMonth, setArea, setYear, setName, setEditId, setResetPage]);
+
+  useEffect(() => {
     localStorage.setItem('accounts', JSON.stringify(users));
     localStorage.setItem('logged', JSON.stringify(logged));
-  }, [users, logged, setOpen, length, openEditModal, resetPage]);
+  }, [users, logged, openEditModal, resetPage]);
+
+  const handleOpenModal = () => {
+    document.querySelector('.header').classList.add('headerFilter');
+    document.querySelector('.section').classList.add('sectionFilter');
+    document.body.classList.add('bodyOverflow');
+    setOpenModal(true);
+  };
 
   const handleCloseModal = () => {
     setOpenModal(false);
     setOpenEditModal(false);
-    setEmail('');
+    setOpenDeleteModal(false);
+    setDeleteCompletedModal(false);
+    setDeleteInProgressModal(false);
+    setArea('default');
+    setMonth('default');
     setName('');
-    setPhone('');
-    setAddress('');
-    document.querySelector('.header').style.filter = 'none';
-    document.querySelector('.section').style.filter = 'none';
+    setYear('');
+    setDay('');
+    document.querySelector('.header').classList.remove('headerFilter');
+    document.querySelector('.section').classList.remove('sectionFilter');
+    document.body.classList.remove('bodyOverflow');
   };
 
-  const handleOpenModal = () => {
-    document.querySelector('.header').style.filter = 'blur(2px)';
-    document.querySelector('.section').style.filter = 'blur(2px)';
-    setOpenModal(true);
-  };
-
-  const handleAddInformation = (e) => {
-    e.preventDefault();
-
-    const info = {
-      name: name,
-      email: email,
-      address: address,
-      phone: phone,
-      id: Date.now(),
-    };
-
-    logged.tableInfo.push(info);
-    const filter = users.filter((el) => {
-      return el.email === logged.email;
-    });
-
-    filter[0].tableInfo = logged.tableInfo;
-    handleCloseModal();
-  };
-
-  const handleEditCrud = (id) => {
+  const handleEditCrud = (id, area) => {
     setOpenEditModal(true);
     setEditId(id);
-    const filter = logged.tableInfo.filter((el) => {
-      return el.id === id;
-    });
-    if (filter[0] === undefined) {
-      return;
+    setEditArea(area);
+
+    if (area === 'Front-end') {
+      const filter = logged.frontProjects.filter((el) => {
+        return el.id === id;
+      });
+      if (filter[0] === undefined) {
+        return;
+      }
+      setName(filter[0].name);
+      setMonth(filter[0].month);
+      setYear(filter[0].year);
+      setDay(filter[0].day);
+    } else if (area === 'Back-end') {
+      const filter = logged.backProjects.filter((el) => {
+        return el.id === id;
+      });
+      if (filter[0] === undefined) {
+        return;
+      }
+      setName(filter[0].name);
+      setMonth(filter[0].month);
+      setYear(filter[0].year);
+      setDay(filter[0].day);
+    } else {
+      const filter = logged.uiDesignProjects.filter((el) => {
+        return el.id === id;
+      });
+      if (filter[0] === undefined) {
+        return;
+      }
+      setName(filter[0].name);
+      setMonth(filter[0].month);
+      setYear(filter[0].year);
+      setDay(filter[0].day);
     }
-    setName(filter[0].name);
-    setPhone(filter[0].phone);
-    setEmail(filter[0].email);
-    setAddress(filter[0].address);
-    document.querySelector('.header').style.filter = 'blur(2px)';
-    document.querySelector('.section').style.filter = 'blur(2px)';
+
+    document.querySelector('.header').classList.add('headerFilter');
+    document.querySelector('.section').classList.add('sectionFilter');
+    document.body.classList.add('bodyOverflow');
   };
 
-  const handleEditInformation = (e) => {
-    e.preventDefault();
-
-    const filter = logged.tableInfo.filter((el) => {
-      return el.id === editId;
-    });
-    if (filter[0] === undefined) {
-      return;
-    }
-    filter[0].name = name;
-    filter[0].email = email;
-    filter[0].phone = phone;
-    filter[0].address = address;
-
-    document.querySelector('.header').style.filter = 'none';
-    document.querySelector('.section').style.filter = 'none';
-    setOpenEditModal(false);
-    setEmail('');
-    setName('');
-    setPhone('');
-    setAddress('');
-  };
-
-  const handleDeleteInfo = (id) => {
+  const handleDeleteInfo = (id, area) => {
     setResetPage(!resetPage);
-    const filterTable = logged.tableInfo.filter((el) => {
-      return el.id !== id;
-    });
-    const filter = users.filter((el) => {
-      return el.email === logged.email;
-    });
-    logged.tableInfo = filterTable;
-    filter[0].tableInfo = filterTable;
+
+    if (area === 'Front-end') {
+      const filterFront = logged.frontProjects.filter((el) => {
+        return el.id !== id;
+      });
+      const filter = users.filter((el) => {
+        return el.email === logged.email;
+      });
+
+      logged.frontProjects = filterFront;
+      filter[0].frontProjects = filterFront;
+    } else if (area === 'Back-end') {
+      const filterBack = logged.backProjects.filter((el) => {
+        return el.id !== id;
+      });
+      const filter = users.filter((el) => {
+        return el.email === logged.email;
+      });
+
+      logged.backProjects = filterBack;
+      filter[0].backProjects = filterBack;
+    } else {
+      const filterUi = logged.uiDesignProjects.filter((el) => {
+        return el.id !== id;
+      });
+      const filter = users.filter((el) => {
+        return el.email === logged.email;
+      });
+
+      logged.uiDesignProjects = filterUi;
+      filter[0].uiDesignProjects = filterUi;
+    }
   };
 
   return (
     <>
-      {openModal && (
-        <S.BackgroundModal>
-          <S.Modal>
-            <S.HeaderModal>
-              <S.ModalTitle>Register information</S.ModalTitle>
-              <S.CloseModal onClick={() => handleCloseModal()}>
-                <AiOutlineClose />
-              </S.CloseModal>
-            </S.HeaderModal>
-            <S.ModalForm onSubmit={(e) => handleAddInformation(e)}>
-              <Input
-                required={true}
-                id="name"
-                value={name}
-                handleChange={(e) => setName(e.target.value)}
-                type="text"
-                placeholder="Name"
-              />
-
-              <Input
-                required={true}
-                value={email}
-                id="email"
-                handleChange={(e) => setEmail(e.target.value)}
-                type="email"
-                placeholder="Email"
-              />
-
-              <Input
-                required={true}
-                id="address"
-                value={address}
-                type="text"
-                handleChange={(e) => setAddress(e.target.value)}
-                placeholder="Address"
-              />
-
-              <Input
-                type="tel"
-                value={phone}
-                required={true}
-                handleChange={(e) => setPhone(e.target.value)}
-                placeholder="Phone"
-                id="phone"
-              />
-
-              <S.ModalButton type="submit">
-                <AiOutlineArrowRight />
-              </S.ModalButton>
-            </S.ModalForm>
-          </S.Modal>
-        </S.BackgroundModal>
-      )}
-      {openEditModal && (
-        <S.BackgroundModal>
-          <S.Modal>
-            <S.HeaderModal>
-              <S.ModalTitle>Edit information</S.ModalTitle>
-              <S.CloseModal onClick={() => handleCloseModal()}>
-                <AiOutlineClose />
-              </S.CloseModal>
-            </S.HeaderModal>
-            <S.ModalForm onSubmit={(e) => handleEditInformation(e)}>
-              <Input
-                required={true}
-                id="name"
-                value={name}
-                handleChange={(e) => setName(e.target.value)}
-                type="text"
-                placeholder="Name"
-              />
-
-              <Input
-                required={true}
-                value={email}
-                id="email"
-                handleChange={(e) => setEmail(e.target.value)}
-                type="email"
-                placeholder="Email"
-              />
-
-              <Input
-                required={true}
-                id="address"
-                value={address}
-                type="text"
-                handleChange={(e) => setAddress(e.target.value)}
-                placeholder="Address"
-              />
-
-              <Input
-                type="tel"
-                value={phone}
-                required={true}
-                handleChange={(e) => setPhone(e.target.value)}
-                placeholder="Phone Ex: (17) 99999-9999"
-                id="phone"
-              />
-
-              <S.ModalButton type="submit">
-                <AiOutlineArrowRight />
-              </S.ModalButton>
-            </S.ModalForm>
-          </S.Modal>
-        </S.BackgroundModal>
-      )}
+      <Modals
+        openModal={openModal}
+        openEditModal={openEditModal}
+        handleCloseModal={handleCloseModal}
+        editArea={editArea}
+      />
       <Header />
       <S.Section className="section">
         <Container>
           {Object.keys(logged).length > 0 && (
             <>
               <S.AddArea>
-                <S.AddedDetails>
-                  Details: {logged.tableInfo.length} added details
-                </S.AddedDetails>
+                <S.AddedDetails>Projects:</S.AddedDetails>
                 <S.AddButton
                   onClick={() => {
                     setOpen(false);
-                    handleOpenModal();
+                    handleOpenModal(setOpenModal);
                   }}
                 >
-                  Add details
+                  Add project
                 </S.AddButton>
               </S.AddArea>
 
-              <S.TableWrapper>
-                {logged.tableInfo.length > 0 && (
-                  <S.Table scope="row">
-                    <thead>
-                      <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {logged.tableInfo.map((el) => (
-                        <tr id={el.id} key={el.id}>
-                          <td>{el.name}</td>
-                          <td>{el.email}</td>
-                          <td>{el.address}</td>
-                          <td>{el.phone}</td>
-                          <td>
-                            <S.ActionsArea>
-                              <S.DeleteButton
-                                id={el.id}
-                                onClick={() => {
-                                  handleDeleteInfo(el.id);
-                                }}
-                              >
-                                <BsFillTrashFill id={el.id} />
-                              </S.DeleteButton>
-                              <S.EditButton
-                                id={el.id}
-                                onClick={() => {
-                                  handleEditCrud(el.id);
-                                }}
-                              >
-                                <AiFillEdit id={el.id} />
-                              </S.EditButton>
-                            </S.ActionsArea>
-                          </td>
-                        </tr>
+              <S.ProjectsWrapper>
+                {logged.completed.length === 0 && null}
+                {logged.completed.length > 0 && (
+                  <S.Project>
+                    <S.ProjectTitle>Completed Projects:</S.ProjectTitle>
+                    <SwiperComponent>
+                      {logged.completed.map((el) => (
+                        <SwiperSlide
+                          className={el.area.toLowerCase()}
+                          key={el.id}
+                        >
+                          <S.ProjectName>{el.name}</S.ProjectName>
+                          <S.ProjectArea>{el.area}</S.ProjectArea>
+                          <S.ProjectDate>
+                            <S.ProjectSpan>Finished </S.ProjectSpan>
+                          </S.ProjectDate>
+                          <ActionsArea
+                            inProgress={false}
+                            completed={true}
+                            id={el.id}
+                            area={el.area}
+                            handleCloseModal={handleCloseModal}
+                            handleOpenModal={handleOpenModal}
+                            openDeleteModal={openDeleteModal}
+                          />
+                        </SwiperSlide>
                       ))}
-                    </tbody>
-                  </S.Table>
+                    </SwiperComponent>
+                  </S.Project>
                 )}
-              </S.TableWrapper>
-              {logged.tableInfo.length === 0 && (
-                <div>
-                  <S.NoItems>No details added!</S.NoItems>
-                </div>
-              )}
+
+                {logged.inProgress.length === 0 && null}
+                {logged.inProgress.length > 0 && (
+                  <S.Project>
+                    <S.ProjectTitle>In Progress Projects:</S.ProjectTitle>
+                    <SwiperComponent>
+                      {logged.inProgress.map((el) => (
+                        <SwiperSlide
+                          className={`${el.area.toLowerCase()} ${el.area.toLowerCase()}-prg`}
+                          key={el.id}
+                        >
+                          <S.ProjectName>{el.name}</S.ProjectName>
+                          <S.ProjectArea>{el.area}</S.ProjectArea>
+                          <S.ProjectDate>
+                            <S.ProjectSpan>Date to finish: </S.ProjectSpan>
+                            {el.date}
+                          </S.ProjectDate>
+                          <ActionsArea
+                            inProgress={true}
+                            completed={false}
+                            id={el.id}
+                            handleOpenModal={handleOpenModal}
+                            area={el.area}
+                            handleCloseModal={handleCloseModal}
+                            openDeleteModal={openDeleteModal}
+                          />
+                        </SwiperSlide>
+                      ))}
+                    </SwiperComponent>
+                  </S.Project>
+                )}
+
+                <S.Project bg="front">
+                  <S.ProjectTitle>Front-end Projects:</S.ProjectTitle>
+                  {logged.frontProjects.length > 0 ? (
+                    <SwiperComponent>
+                      {logged.frontProjects.map((el) => (
+                        <SwiperSlide key={el.id}>
+                          <S.ProjectName>{el.name}</S.ProjectName>
+                          <S.ProjectArea>{el.area}</S.ProjectArea>
+                          <S.ProjectDate>
+                            <S.ProjectSpan>Date to finish: </S.ProjectSpan>
+                            {el.date}
+                          </S.ProjectDate>
+                          <ActionsArea
+                            completed={false}
+                            inProgress={false}
+                            handleOpenModal={handleOpenModal}
+                            id={el.id}
+                            handleCloseModal={handleCloseModal}
+                            openDeleteModal={openDeleteModal}
+                            area={el.area}
+                            handleEditCrud={handleEditCrud}
+                            handleDeleteInfo={handleDeleteInfo}
+                          />
+                        </SwiperSlide>
+                      ))}
+                    </SwiperComponent>
+                  ) : (
+                    <S.NoItems>No Front-end project!</S.NoItems>
+                  )}
+                </S.Project>
+
+                <S.Project bg="back">
+                  <S.ProjectTitle>Back-end Projects:</S.ProjectTitle>
+                  {logged.backProjects.length > 0 ? (
+                    <SwiperComponent>
+                      {logged.backProjects.map((el) => (
+                        <SwiperSlide key={el.id}>
+                          <S.ProjectName>{el.name}</S.ProjectName>
+                          <S.ProjectArea>{el.area}</S.ProjectArea>
+                          <S.ProjectDate>
+                            <S.ProjectSpan>Date to finish: </S.ProjectSpan>
+                            {el.date}
+                          </S.ProjectDate>
+                          <ActionsArea
+                            completed={false}
+                            inProgress={false}
+                            setResetPage={setResetPage}
+                            resetPage={resetPage}
+                            handleOpenModal={handleOpenModal}
+                            id={el.id}
+                            handleCloseModal={handleCloseModal}
+                            openDeleteModal={openDeleteModal}
+                            area={el.area}
+                            handleEditCrud={handleEditCrud}
+                            handleDeleteInfo={handleDeleteInfo}
+                          />
+                        </SwiperSlide>
+                      ))}
+                    </SwiperComponent>
+                  ) : (
+                    <S.NoItems>No Back-end project!</S.NoItems>
+                  )}
+                </S.Project>
+
+                <S.Project bg="ui">
+                  <S.ProjectTitle>Ui design Projects:</S.ProjectTitle>
+                  {logged.uiDesignProjects.length > 0 ? (
+                    <SwiperComponent>
+                      {logged.uiDesignProjects.map((el) => (
+                        <SwiperSlide key={el.id}>
+                          <S.ProjectName>{el.name}</S.ProjectName>
+                          <S.ProjectArea>{el.area}</S.ProjectArea>
+                          <S.ProjectDate>
+                            <S.ProjectSpan>Date to finish: </S.ProjectSpan>
+                            {el.date}
+                          </S.ProjectDate>
+                          <ActionsArea
+                            completed={false}
+                            inProgress={false}
+                            area={el.area}
+                            handleCloseModal={handleCloseModal}
+                            openDeleteModal={openDeleteModal}
+                            handleOpenModal={handleOpenModal}
+                            id={el.id}
+                            handleEditCrud={handleEditCrud}
+                            handleDeleteInfo={handleDeleteInfo}
+                          />
+                        </SwiperSlide>
+                      ))}
+                    </SwiperComponent>
+                  ) : (
+                    <S.NoItems>No Ui design project!</S.NoItems>
+                  )}
+                </S.Project>
+              </S.ProjectsWrapper>
             </>
           )}
           {Object.keys(logged).length === 0 && (

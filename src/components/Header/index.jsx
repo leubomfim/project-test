@@ -11,9 +11,15 @@ export const Header = () => {
 
   const handleOpenMenu = () => {
     setOpen(true);
+    document.querySelector('.header').classList.add('headerFilter');
+    document.querySelector('.section').classList.add('sectionFilter');
+    document.body.classList.add('bodyOverflow');
   };
 
   const handleCloseMenu = () => {
+    document.querySelector('.header').classList.remove('headerFilter');
+    document.querySelector('.section').classList.remove('sectionFilter');
+    document.body.classList.remove('bodyOverflow');
     setOpen(false);
   };
 
@@ -29,41 +35,51 @@ export const Header = () => {
     <>
       <>
         {Object.keys(logged).length > 0 && (
-          <S.DropMenu open={open} className={open ? 'openMenu' : 'closeMenu'}>
-            <S.ButtonClose onClick={handleCloseMenu}>
-              <AiOutlineClose />
-            </S.ButtonClose>
-            <S.Name open={open}>
-              {logged.name.length > 15
-                ? logged.name.substring(0, 15) + '...'
-                : logged.name}
-            </S.Name>
-            <S.MenuList open={open}>
-              <S.MenuItem onClick={() => setOpen(false)}>
-                <Link to="/settings">Settings</Link>
-              </S.MenuItem>
-              <S.MenuItem onClick={() => setOpen(false)}>
-                <Link onClick={(e) => handleLogout(e)} to="/">
-                  Logout
-                </Link>
-              </S.MenuItem>
-            </S.MenuList>
-          </S.DropMenu>
+          <S.MenuSideBarBg
+            open={open}
+            className={open ? 'openMenu' : 'closeMenu'}
+          >
+            <S.MenuSideBar>
+              <S.ButtonClose onClick={handleCloseMenu}>
+                <AiOutlineClose />
+              </S.ButtonClose>
+              <S.Name open={open}>
+                {logged.name.length > 15
+                  ? logged.name.substring(0, 15) + '...'
+                  : logged.name}
+              </S.Name>
+              <S.MenuList open={open}>
+                <S.MenuItem onClick={() => setOpen(false)}>
+                  <Link to="/settings">Settings</Link>
+                </S.MenuItem>
+                <S.MenuItem onClick={() => setOpen(false)}>
+                  <Link onClick={(e) => handleLogout(e)} to="/">
+                    Logout
+                  </Link>
+                </S.MenuItem>
+              </S.MenuList>
+            </S.MenuSideBar>
+          </S.MenuSideBarBg>
         )}{' '}
         {Object.keys(logged).length === 0 && (
-          <S.DropMenu open={open} className={open ? 'openMenu' : 'closeMenu'}>
-            <S.ButtonClose onClick={handleCloseMenu}>
-              <AiOutlineClose />
-            </S.ButtonClose>
-            <S.MenuList open={open}>
-              <S.MenuItem onClick={() => setOpen(false)}>
-                <Link to="/login">Login</Link>
-              </S.MenuItem>
-              <S.MenuItem onClick={() => setOpen(false)}>
-                <Link to="/register">Register</Link>
-              </S.MenuItem>
-            </S.MenuList>
-          </S.DropMenu>
+          <S.MenuSideBarBg
+            open={open}
+            className={open ? 'openMenu' : 'closeMenu'}
+          >
+            <S.MenuSideBar>
+              <S.ButtonClose onClick={handleCloseMenu}>
+                <AiOutlineClose />
+              </S.ButtonClose>
+              <S.MenuList open={open}>
+                <S.MenuItem onClick={() => setOpen(false)}>
+                  <Link to="/login">Login</Link>
+                </S.MenuItem>
+                <S.MenuItem onClick={() => setOpen(false)}>
+                  <Link to="/register">Register</Link>
+                </S.MenuItem>
+              </S.MenuList>
+            </S.MenuSideBar>
+          </S.MenuSideBarBg>
         )}
       </>
 

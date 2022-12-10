@@ -47,7 +47,11 @@ export const Register = () => {
       email: email,
       genre: genre,
       id: Date.now(),
-      tableInfo: [],
+      completed: [],
+      frontProjects: [],
+      backProjects: [],
+      uiDesignProjects: [],
+      inProgress: [],
     };
 
     addUser(user);

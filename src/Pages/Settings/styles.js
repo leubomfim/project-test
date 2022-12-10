@@ -19,4 +19,5 @@ export const ShowPassword = styled.button`
   background-color: transparent;
   top: 12px;
   font-size: 18px;
+  cursor: pointer;
 `;
