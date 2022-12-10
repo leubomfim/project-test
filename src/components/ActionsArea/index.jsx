@@ -126,8 +126,6 @@ export const ActionsArea = ({
   };
 
   const handlePutInProgress = () => {
-    console.log(area, id);
-
     const filter = logged.completed.filter((el) => {
       return el.id === id;
     });
@@ -152,7 +150,7 @@ export const ActionsArea = ({
     } else if (area === 'Back-end') {
       logged.backProjects.push(filter[0]);
     } else {
-      logged.uiDesign.push(filter[0]);
+      logged.uiDesignProjects.push(filter[0]);
     }
     const filterDifferent = logged.completed.filter((el) => {
       return el.id !== id;

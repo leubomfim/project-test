@@ -6,8 +6,6 @@ import { useInformationContext } from '../../contexts/context';
 
 export const SwiperComponent = ({ children }) => {
   const { width } = useInformationContext();
-
-  console.log(width);
   return (
     <Swiper
       spaceBetween={
