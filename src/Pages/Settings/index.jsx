@@ -11,31 +11,29 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import bg from '../../images/bg3.jpg';
 
 export const Settings = () => {
-  const { logged, users, navigate } = useInformationContext();
-  const [attPage, setAttPage] = useState(false);
+  const { logged, users, navigate, resetPage, setResetPage } =
+    useInformationContext();
   const [name, setName] = useState(logged.name);
   const [email, setEmail] = useState(logged.email);
   const [password, setPassword] = useState(logged.password);
   const [showPassword, setShowPassword] = useState(false);
+  const [success, setSuccess] = useState({});
+
+  window.addEventListener('load', () => {
+    if (Object.values(logged).length === 0) {
+      navigate('/');
+    }
+  });
 
   useEffect(() => {
-    window.addEventListener('load', () => {
-      if (Object.values(logged).length === 0) {
-        navigate('/');
-      }
-      localStorage.setItem('accounts', JSON.stringify(users));
-      localStorage.setItem('logged', JSON.stringify(logged));
-      document.title = 'Settings';
-    });
-
-    return () => {
-      window.removeEventListener('load', () => {});
-    };
-  }, [attPage, navigate, logged, users]);
+    document.title = 'Settings';
+    localStorage.setItem('accounts', JSON.stringify(users));
+    localStorage.setItem('logged', JSON.stringify(logged));
+  }, [resetPage, navigate, logged, users]);
 
   const handleChangeAccount = (e) => {
     e.preventDefault();
-    setAttPage(!attPage);
+    setResetPage(!resetPage);
 
     const filter = users.filter((el) => {
       return el.email === logged.email;
@@ -48,11 +46,18 @@ export const Settings = () => {
     filter[0].email = email;
     filter[0].name = name;
     filter[0].password = password;
+
+    setSuccess({ successTitle: 'Account updated successfully!' });
   };
 
   return (
     <Background bg={bg}>
       <FormModal margin={false} text="Settings">
+        {Object.values(success).length > 0 && (
+          <S.SuccessBox>
+            <S.SuccessTitle>{success.successTitle}</S.SuccessTitle>
+          </S.SuccessBox>
+        )}
         <S.Form onSubmit={(e) => handleChangeAccount(e)}>
           <Input
             required={true}
