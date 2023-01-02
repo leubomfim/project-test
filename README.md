@@ -1,6 +1,6 @@
 <h1>Projects app :heartbeat:</h1> 
 
-Aplicativo de projetos, aonde é possível guardar seus projetos sejam eles a fazer, completo ou em progresso.
+Aplicativo de projetos, aonde é possível guardar seus projetos sejam eles, projetos a fazer, completos ou em progresso.
 
 ## 🎯 Objetivo do projeto 
 
