@@ -54,7 +54,7 @@ export const ErrorBox = styled.div`
   position: absolute;
   top: 110px;
   right: 40px;
-  padding: 17px 10px;
+  padding: 12px 10px;
   border-radius: 5px;
   border: 2px solid red;
 

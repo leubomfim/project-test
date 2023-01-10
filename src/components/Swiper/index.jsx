@@ -1,6 +1,5 @@
 import P from 'prop-types';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-
 import { Swiper } from 'swiper/react';
 import { useInformationContext } from '../../contexts/context';
 

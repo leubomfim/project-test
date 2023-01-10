@@ -175,7 +175,12 @@ export const Register = () => {
             type={showPassword ? 'text' : 'password'}
             placeholder="Password"
           >
-            <S.ShowPassword onClick={() => setShowPassword((s) => !s)}>
+            <S.ShowPassword
+              onClick={(e) => {
+                e.preventDefault();
+                setShowPassword((s) => !s);
+              }}
+            >
               {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
             </S.ShowPassword>
           </Input>
@@ -188,7 +193,12 @@ export const Register = () => {
             type={showConfirmPassword ? 'text' : 'password'}
             placeholder="Confirm password"
           >
-            <S.ShowPassword onClick={() => setShowConfirmPassword((s) => !s)}>
+            <S.ShowPassword
+              onClick={(e) => {
+                e.preventDefault();
+                setShowConfirmPassword((s) => !s);
+              }}
+            >
               {showConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
             </S.ShowPassword>
           </Input>

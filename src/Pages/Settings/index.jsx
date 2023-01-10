@@ -83,7 +83,12 @@ export const Settings = () => {
             type={showPassword ? 'text' : 'password'}
             handleChange={(e) => setPassword(e.target.value)}
           >
-            <S.ShowPassword onClick={() => setShowPassword((s) => !s)}>
+            <S.ShowPassword
+              onClick={(e) => {
+                e.preventDefault();
+                setShowPassword((s) => !s);
+              }}
+            >
               {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
             </S.ShowPassword>
           </Input>

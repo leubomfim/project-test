@@ -59,17 +59,20 @@ export const Login = () => {
       });
     } else {
       if (users.length > 0) {
-        const cu = users.filter((el) => {
+        const usersFilter = users.filter((el) => {
           return el.email === email;
         });
-        if (cu[0] === undefined) {
+        if (usersFilter[0] === undefined) {
           setError({
             errorTitle: "This user don't exist!",
             errorText:
               'Please check the completed fields as this account was not found in the account records.',
           });
-        } else if (cu[0].email === email && cu[0].password === password) {
-          setLogged(cu[0]);
+        } else if (
+          usersFilter[0].email === email &&
+          usersFilter[0].password === password
+        ) {
+          setLogged(usersFilter[0]);
           navigate('/');
           setEmail('');
           setPassword('');
@@ -121,7 +124,12 @@ export const Login = () => {
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
               >
-                <S.ShowPassword onClick={() => setShowPassword((s) => !s)}>
+                <S.ShowPassword
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowPassword((s) => !s);
+                  }}
+                >
                   {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
                 </S.ShowPassword>
               </Input>
